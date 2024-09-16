@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <h2>Welcome, Admin!</h2>
+
+    <h3>Post Soil Details</h3>
+    <form id="post-soil-form">
+        <input type="text" id="soil-name" placeholder="Soil Name" required>
+        <textarea id="soil-details" placeholder="Soil Characteristics" required></textarea>
+        <button type="submit">Post Soil Details</button>
+    </form>
+
+    <h3>Post Distributor Details</h3>
+    <form id="post-distributor-form">
+        <input type="text" id="distributor-name" placeholder="Distributor Name" required>
+        <input type="text" id="distributor-location" placeholder="Location" required>
+        <button type="submit">Post Distributor Details</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
