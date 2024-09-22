@@ -1,5 +1,7 @@
-import { auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 // Admin login
 document.getElementById('admin-login').addEventListener('submit', (e) => {
@@ -20,35 +22,60 @@ document.getElementById('admin-login').addEventListener('submit', (e) => {
         });
 });
 
-
 // Post Soil Details
-document.getElementById('post-soil-form').addEventListener('submit', (e) => {
+document.getElementById('post-soil-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const soilName = document.getElementById('soil-name').value;
     const soilDetails = document.getElementById('soil-details').value;
 
-    db.collection('soils').add({
-        name: soilName,
-        details: soilDetails
-    }).then(() => {
-        console.log("Soil details posted");
-    }).catch((error) => {
-        console.error("Error posting soil details", error);
-    });
+    try {
+        // Add soil details to Firestore collection 'soils'
+        await addDoc(collection(db, 'soils'), {
+            name: soilName,
+            details: soilDetails,
+        });
+        console.log("Soil details posted successfully");
+        alert("Soil details posted successfully!");
+        document.getElementById('post-soil-form').reset(); // Clear the form
+    } catch (error) {
+        console.error("Error posting soil details:", error);
+        alert("Failed to post soil details.");
+    }
 });
 
 // Post Distributor Details
-document.getElementById('post-distributor-form').addEventListener('submit', (e) => {
+document.getElementById('post-distributor-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const distributorName = document.getElementById('distributor-name').value;
     const location = document.getElementById('distributor-location').value;
 
-    db.collection('distributors').add({
-        name: distributorName,
-        location: location
-    }).then(() => {
-        console.log("Distributor details posted");
-    }).catch((error) => {
-        console.error("Error posting distributor details", error);
-    });
+    try {
+        // Add distributor details to Firestore collection 'distributors'
+        await addDoc(collection(db, 'distributors'), {
+            name: distributorName,
+            location: location,
+        });
+        console.log("Distributor details posted successfully");
+        alert("Distributor details posted successfully!");
+        document.getElementById('post-distributor-form').reset(); // Clear the form
+    } catch (error) {
+        console.error("Error posting distributor details:", error);
+        alert("Failed to post distributor details.");
+    }
+});
+
+// Handle Logout
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = "index.html"; // Redirect to login page
+            }).catch((error) => {
+                console.error("Error logging out:", error);
+            });
+        });
+    } else {
+        console.error('Logout button not found');
+    }
 });
